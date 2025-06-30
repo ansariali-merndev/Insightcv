@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  authGoogle,
   authHome,
   authLogin,
   authLogout,
@@ -14,3 +15,4 @@ authRouter.post("/register", authRegister);
 authRouter.post("/login", authLogin);
 authRouter.get("/logout", authLogout);
 authRouter.get("/verify", authVerify);
+authRouter.post("/google", authGoogle);

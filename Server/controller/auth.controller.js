@@ -2,6 +2,7 @@ import { createUser, searchUser } from "../services/auth.service.js";
 import { handleError } from "../utils/constant.js";
 import { compareBcrypt, hashBcrypt } from "../utils/bcrypt.js";
 import { createJwtToken, verifyJwtToken } from "../utils/jwt.js";
+import { OAuth2Client } from "google-auth-library";
 
 export const authHome = (req, res) => {
   try {
@@ -151,5 +152,51 @@ export const authVerify = async (req, res) => {
     });
   } catch (error) {
     handleError(error, "Auth verify error");
+  }
+};
+
+export const authGoogle = async (req, res) => {
+  const { code } = req.body;
+
+  const client_id = process.env.CLIENT_ID;
+  const secret_key = process.env.CLIENT_SECRET;
+  try {
+    const client = new OAuth2Client(client_id, secret_key, "postmessage");
+
+    const { tokens } = await client.getToken(code);
+
+    const ticket = await client.verifyIdToken({
+      idToken: tokens.id_token,
+      audience: client_id,
+    });
+
+    const payload = ticket.getPayload();
+
+    const { name, email, picture } = payload;
+
+    let user = await searchUser(email);
+
+    if (!user) {
+      user = await createUser({
+        username: email,
+        image: picture,
+        password: `${name}google`,
+      });
+    }
+
+    const jwtToken = createJwtToken(email, user._id);
+
+    res.cookie("InsightAuth", jwtToken, {
+      path: "/",
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "working",
+    });
+  } catch (error) {
+    handleError(error, "Google Auth error");
   }
 };
