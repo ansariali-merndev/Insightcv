@@ -36,3 +36,4 @@ build/
 *.tgz
 
 .env
+googleAuth.json
