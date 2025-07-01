@@ -1,4 +1,47 @@
+import { useState } from "react";
+import { Password } from "../components/Password";
+import { Link } from "react-router-dom";
+
 export const SignIn = () => {
+  const [loginForm, setLoginForm] = useState({
+    username: "",
+    password: "",
+  });
+
+  const handleUsername = (e) => {
+    setLoginForm((prev) => {
+      return {
+        ...prev,
+        username: e.target.value,
+      };
+    });
+  };
+
+  const handlePass = (e) => {
+    setLoginForm((prev) => {
+      return {
+        ...prev,
+        password: e.target.value,
+      };
+    });
+  };
+
+  const handlePassword = {
+    confirmPass: false,
+    name: "login_password",
+    setPassword: handlePass,
+    Password: loginForm.password,
+  };
+
+  const handleLoginFormSubmit = (e) => {
+    e.preventDefault();
+    console.log("Login detail: ", loginForm);
+    setLoginForm({
+      username: "",
+      password: "",
+    });
+  };
+
   return (
     <section className="flex flex-col justify-center items-center py-12">
       <div className="py-8 px-14 rounded-2xl border border-gray-300 backdrop-blur-md w-full max-w-md">
@@ -25,7 +68,7 @@ export const SignIn = () => {
             />
           </div>
 
-          <Password value={passValue} />
+          <Password value={handlePassword} />
 
           <button
             type="submit"
