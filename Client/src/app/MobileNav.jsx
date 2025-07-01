@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { RiMenu3Line } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
 import { NavItem } from "../lib/utils";
+import { UseUser } from "../context/userContext";
 
 export const MobileNav = () => {
   const [openNav, setOpenNav] = useState(false);
+
+  const { isAuthorized, userLogout } = UseUser();
 
   return (
     <nav className="flex md:hidden">
@@ -25,13 +28,19 @@ export const MobileNav = () => {
           </NavLink>
         ))}
 
-        <NavLink
-          onClick={() => setOpenNav(false)}
-          to={"/sign-in"}
-          className="px-2 py-1"
-        >
-          Sign in
-        </NavLink>
+        {isAuthorized ? (
+          <button onClick={userLogout} className="cursor-pointer">
+            logout
+          </button>
+        ) : (
+          <NavLink
+            onClick={() => setOpenNav(false)}
+            to={"/sign-in"}
+            className="px-2 py-1"
+          >
+            Sign in
+          </NavLink>
+        )}
 
         <p
           onClick={() => setOpenNav(false)}

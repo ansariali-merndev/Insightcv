@@ -1,13 +1,19 @@
 import { useState } from "react";
 import { Password } from "../components/Password";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Google } from "../components/Google";
+import { handleLogin } from "../lib/axios";
+import Swal from "sweetalert2";
+import { UseUser } from "../context/userContext";
 
 export const SignIn = () => {
   const [loginForm, setLoginForm] = useState({
     username: "",
     password: "",
   });
+
+  const navigate = useNavigate();
+  const { setIsAuthorized } = UseUser();
 
   const handleUsername = (e) => {
     setLoginForm((prev) => {
@@ -34,9 +40,27 @@ export const SignIn = () => {
     Password: loginForm.password,
   };
 
-  const handleLoginFormSubmit = (e) => {
+  const handleLoginFormSubmit = async (e) => {
     e.preventDefault();
     console.log("Login detail: ", loginForm);
+
+    const res = await handleLogin({
+      username: loginForm.username,
+      password: loginForm.password,
+    });
+
+    if (!res.success) {
+      Swal.fire({
+        title: "Credential Wrong",
+        text: res.message,
+        icon: "warning",
+      });
+      return;
+    }
+
+    navigate("/");
+    setIsAuthorized(true);
+
     setLoginForm({
       username: "",
       password: "",

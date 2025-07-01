@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Password } from "../components/Password";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Google } from "../components/Google";
+import { handleRegister } from "../lib/axios";
+import Swal from "sweetalert2";
+import { UseUser } from "../context/userContext";
 
 export const SignUp = () => {
   const [registerForm, setRegisterForm] = useState({
@@ -9,6 +12,9 @@ export const SignUp = () => {
     password: "",
     confirmPassword: "",
   });
+
+  const navigate = useNavigate();
+  const { setIsAuthorized } = UseUser();
 
   const passValue = {
     confirmPass: false,
@@ -47,9 +53,37 @@ export const SignUp = () => {
     });
   };
 
-  const handleRegisterSubmit = (e) => {
+  const handleRegisterSubmit = async (e) => {
     e.preventDefault();
-    console.log("register Form: ", registerForm);
+    // console.log("register Form: ", registerForm);
+
+    if (registerForm.password !== registerForm.confirmPassword) {
+      Swal.fire({
+        title: "Password mismatch",
+        text: "Password and confirm password do not match",
+        icon: "error",
+      });
+
+      return;
+    }
+
+    const res = await handleRegister({
+      username: registerForm.username,
+      password: registerForm.password,
+    });
+
+    if (!res.success) {
+      Swal.fire({
+        title: "Something went wrong",
+        text: res.message,
+        icon: "warning",
+      });
+      return;
+    }
+
+    navigate("/");
+    setIsAuthorized(true);
+
     setRegisterForm({
       username: "",
       password: "",

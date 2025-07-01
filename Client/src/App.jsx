@@ -5,6 +5,7 @@ import { Contact } from "./pages/Contact";
 import { SignIn } from "./pages/SignIn";
 import { SignUp } from "./pages/SignUp";
 import { RootLayout } from "./app/Layout";
+import { UserProvider } from "./context/userContext";
 
 function App() {
   const router = createBrowserRouter([
@@ -36,7 +37,11 @@ function App() {
     },
   ]);
 
-  return <RouterProvider router={router}> </RouterProvider>;
+  return (
+    <UserProvider>
+      <RouterProvider router={router}> </RouterProvider>
+    </UserProvider>
+  );
 }
 
 export default App;
