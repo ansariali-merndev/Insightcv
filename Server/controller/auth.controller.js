@@ -6,7 +6,7 @@ import { OAuth2Client } from "google-auth-library";
 
 export const authHome = (req, res) => {
   try {
-    res.status(200).json({
+    res.json({
       success: true,
       message: "Welcome auth api",
     });
@@ -22,7 +22,7 @@ export const authRegister = async (req, res) => {
     const userExist = await searchUser(username);
 
     if (userExist) {
-      return res.status(409).json({
+      return res.json({
         success: false,
         message: "Username Already Exist",
       });
@@ -38,7 +38,7 @@ export const authRegister = async (req, res) => {
     });
 
     if (!userCreated) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "Internal Server Problem",
       });
@@ -52,7 +52,7 @@ export const authRegister = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.status(201).json({
+    res.json({
       success: true,
       message: "Account Created Successfully",
     });
@@ -68,7 +68,7 @@ export const authLogin = async (req, res) => {
     const user = await searchUser(username);
 
     if (!user) {
-      return res.status(401).json({
+      return res.json({
         success: false,
         message: "Username or password is wrong",
       });
@@ -77,7 +77,7 @@ export const authLogin = async (req, res) => {
     const isMatch = await compareBcrypt(password, user.password);
 
     if (!isMatch) {
-      return res.status(401).json({
+      return res.json({
         success: false,
         message: "Username or password is wrong",
       });
@@ -91,7 +91,7 @@ export const authLogin = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.status(200).json({
+    res.json({
       success: true,
       message: "You are logged in Successfully",
     });
@@ -105,7 +105,7 @@ export const authLogout = (req, res) => {
     const { InsightAuth } = req.cookies;
 
     if (!InsightAuth) {
-      return res.status(200).json({
+      return res.json({
         success: true,
         message: "You are already logout",
       });
@@ -115,7 +115,7 @@ export const authLogout = (req, res) => {
       path: "/",
     });
 
-    res.status(200).json({
+    res.json({
       success: true,
       message: "Logout successfully",
     });
@@ -128,8 +128,8 @@ export const authVerify = async (req, res) => {
   try {
     const { InsightAuth } = req.cookies;
 
-    if (!InsightAuth) {
-      return res.status(401).json({
+    if (typeof InsightAuth === "undefined") {
+      return res.json({
         success: false,
         message: "Not Authorized",
       });
@@ -140,13 +140,13 @@ export const authVerify = async (req, res) => {
     const verifiedUser = await searchUser(decodedToken.username);
 
     if (!verifiedUser || verifiedUser._id.toString() !== decodedToken.id) {
-      return res.status(401).json({
+      return res.json({
         success: false,
         message: "Not Authorized",
       });
     }
 
-    res.status(200).json({
+    res.json({
       success: true,
       message: "verified",
     });
@@ -176,11 +176,13 @@ export const authGoogle = async (req, res) => {
 
     let user = await searchUser(email);
 
+    const hashedPassword = await hashBcrypt(`${name}google`);
+
     if (!user) {
       user = await createUser({
         username: email,
         image: picture,
-        password: `${name}google`,
+        password: hashedPassword,
       });
     }
 
@@ -192,7 +194,7 @@ export const authGoogle = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.status(200).json({
+    res.json({
       success: true,
       message: "working",
     });
