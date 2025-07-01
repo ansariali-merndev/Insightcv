@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Password } from "../components/Password";
 import { Link } from "react-router-dom";
+import { Google } from "../components/Google";
 
 export const SignIn = () => {
   const [loginForm, setLoginForm] = useState({
@@ -77,7 +78,16 @@ export const SignIn = () => {
             Sign In
           </button>
         </form>
+
+        <div className="flex items-center my-4">
+          <div className="flex-grow border-t border-gray-300"></div>
+          <span className="mx-4 text-gray-500">or</span>
+          <div className="flex-grow border-t border-gray-300"></div>
+        </div>
+
+        <Google />
       </div>
+
       <p>
         Don&apos;t have an account?{" "}
         <Link to={"/sign-up"} className="text-indigo-600">

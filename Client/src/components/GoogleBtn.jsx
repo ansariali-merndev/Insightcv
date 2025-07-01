@@ -1,21 +1,10 @@
 import { useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
 
 export const GoogleBtn = () => {
   const responseGoogle = async (authResponse) => {
     try {
       const code = authResponse.code;
       console.log("code: ", code);
-      const res = await axios.post(
-        "http://localhost:5000/auth/google",
-        {
-          code,
-        },
-        {
-          withCredentials: true,
-        }
-      );
-      console.log(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -27,5 +16,12 @@ export const GoogleBtn = () => {
     flow: "auth-code",
   });
 
-  return <button onClick={handleLogin}>Login with google</button>;
+  return (
+    <button
+      className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded font-semibold transition"
+      onClick={handleLogin}
+    >
+      Login with google
+    </button>
+  );
 };

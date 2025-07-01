@@ -1,4 +1,62 @@
+import { useState } from "react";
+import { Password } from "../components/Password";
+import { Link } from "react-router-dom";
+import { Google } from "../components/Google";
+
 export const SignUp = () => {
+  const [registerForm, setRegisterForm] = useState({
+    username: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const passValue = {
+    confirmPass: false,
+    name: "RegisterPassword",
+    setPassword: (e) => {
+      setRegisterForm((prev) => {
+        return {
+          ...prev,
+          password: e.target.value,
+        };
+      });
+    },
+    Password: registerForm.password,
+  };
+
+  const confirmPassValue = {
+    confirmPass: true,
+    name: "ConfirmRegisterPassword",
+    setPassword: (e) => {
+      setRegisterForm((prev) => {
+        return {
+          ...prev,
+          confirmPassword: e.target.value,
+        };
+      });
+    },
+    Password: registerForm.confirmPassword,
+  };
+
+  const handleUsername = (e) => {
+    setRegisterForm((prev) => {
+      return {
+        ...prev,
+        username: e.target.value,
+      };
+    });
+  };
+
+  const handleRegisterSubmit = (e) => {
+    e.preventDefault();
+    console.log("register Form: ", registerForm);
+    setRegisterForm({
+      username: "",
+      password: "",
+      confirmPassword: "",
+    });
+  };
+
   return (
     <section className="flex flex-col justify-center items-center py-12">
       <div className="py-8 px-14 rounded-2xl border border-gray-300 backdrop-blur-md w-full max-w-md">
@@ -35,6 +93,14 @@ export const SignUp = () => {
             Sign up
           </button>
         </form>
+
+        <div className="flex items-center my-4">
+          <div className="flex-grow border-t border-gray-300"></div>
+          <span className="mx-4 text-gray-500">or</span>
+          <div className="flex-grow border-t border-gray-300"></div>
+        </div>
+
+        <Google />
       </div>
       <p>
         Already have a account?{" "}
