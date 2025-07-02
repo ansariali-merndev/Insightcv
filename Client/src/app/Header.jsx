@@ -2,9 +2,10 @@ import { Link, NavLink } from "react-router-dom";
 import { NavItem } from "../lib/utils";
 import { MobileNav } from "./MobileNav";
 import { UseUser } from "../context/userContext";
+import { Profile } from "../components/Profile";
 
 export const Header = () => {
-  const { isAuthorized, userLogout } = UseUser();
+  const { isAuthorized } = UseUser();
 
   return (
     <header className="flex justify-between items-center px-4 shadow-lg h-[12vh]">
@@ -19,9 +20,7 @@ export const Header = () => {
         ))}
 
         {isAuthorized ? (
-          <button onClick={userLogout} className="cursor-pointer">
-            logout
-          </button>
+          <Profile />
         ) : (
           <NavLink
             onClick={() => setOpenNav(false)}

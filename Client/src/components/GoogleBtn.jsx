@@ -7,7 +7,7 @@ import { UseUser } from "../context/userContext";
 
 export const GoogleBtn = () => {
   const navigate = useNavigate();
-  const { setIsAuthorized } = UseUser();
+  const { setIsAuthorized, setCheck } = UseUser();
 
   const responseGoogle = async (authResponse) => {
     try {
@@ -24,6 +24,7 @@ export const GoogleBtn = () => {
       }
 
       setIsAuthorized(true);
+      setCheck((prev) => !prev);
       navigate("/");
       Swal.fire({
         title: "Logged In Successful",

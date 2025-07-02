@@ -3,6 +3,7 @@ import { RiMenu3Line } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
 import { NavItem } from "../lib/utils";
 import { UseUser } from "../context/userContext";
+import { Profile } from "../components/Profile";
 
 export const MobileNav = () => {
   const [openNav, setOpenNav] = useState(false);
@@ -29,9 +30,7 @@ export const MobileNav = () => {
         ))}
 
         {isAuthorized ? (
-          <button onClick={userLogout} className="cursor-pointer">
-            logout
-          </button>
+          <Profile />
         ) : (
           <NavLink
             onClick={() => setOpenNav(false)}

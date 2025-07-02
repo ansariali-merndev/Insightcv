@@ -14,7 +14,7 @@ export const SignUp = () => {
   });
 
   const navigate = useNavigate();
-  const { setIsAuthorized } = UseUser();
+  const { setIsAuthorized, setCheck } = UseUser();
 
   const passValue = {
     confirmPass: false,
@@ -80,7 +80,7 @@ export const SignUp = () => {
       });
       return;
     }
-
+    setCheck((prev) => !prev);
     navigate("/");
     setIsAuthorized(true);
 

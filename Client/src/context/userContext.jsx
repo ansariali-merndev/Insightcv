@@ -6,14 +6,20 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [username, setUsername] = useState("");
+  const [image, setImage] = useState("");
+  const [check, setCheck] = useState(false);
 
   const checkUserAuthorized = async () => {
     const res = await handleVerify();
     if (res.success) {
       setIsAuthorized(true);
+      setUsername(res.user.username);
+      setImage(res.user.image);
     } else {
       setIsAuthorized(false);
     }
+
     return res;
   };
 
@@ -37,12 +43,15 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     checkUserAuthorized();
-  }, []);
+  }, [check]);
 
   const value = {
     isAuthorized,
     setIsAuthorized,
     userLogout,
+    username,
+    image,
+    setCheck,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

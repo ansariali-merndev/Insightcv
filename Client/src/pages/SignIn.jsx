@@ -13,7 +13,7 @@ export const SignIn = () => {
   });
 
   const navigate = useNavigate();
-  const { setIsAuthorized } = UseUser();
+  const { setIsAuthorized, setCheck } = UseUser();
 
   const handleUsername = (e) => {
     setLoginForm((prev) => {
@@ -42,7 +42,7 @@ export const SignIn = () => {
 
   const handleLoginFormSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login detail: ", loginForm);
+    // console.log("Login detail: ", loginForm);
 
     const res = await handleLogin({
       username: loginForm.username,
@@ -58,6 +58,7 @@ export const SignIn = () => {
       return;
     }
 
+    setCheck((prev) => !prev);
     navigate("/");
     setIsAuthorized(true);
 
