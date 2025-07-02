@@ -149,6 +149,7 @@ export const authVerify = async (req, res) => {
     res.json({
       success: true,
       message: "verified",
+      user: verifiedUser,
     });
   } catch (error) {
     handleError(error, "Auth verify error");
