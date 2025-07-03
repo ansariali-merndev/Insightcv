@@ -3,7 +3,7 @@ import { loadScript } from "../lib/razorpay";
 import { handleRazorpayOrder, handleRazorpayVerify } from "../lib/axios";
 
 export const SubscriptionCard = () => {
-  const displayRazorpay = async () => {
+  const displayRazorpay = async (id) => {
     const res = await loadScript(
       "https://checkout.razorpay.com/v1/checkout.js"
     );
@@ -16,7 +16,7 @@ export const SubscriptionCard = () => {
     }
 
     const resAxios = await handleRazorpayOrder({
-      subscription_id: "essential",
+      subscription_id: id,
     });
 
     if (!resAxios.success) {
@@ -35,11 +35,11 @@ export const SubscriptionCard = () => {
       name: "InsightCV",
       description: "Subscription Payment",
       handler: async function (response) {
-        console.log("Payment response:", response);
+        // console.log("Payment response:", response);
 
         try {
           const verifyRes = await handleRazorpayVerify(response);
-          console.log(verifyRes);
+          //   console.log(verifyRes);
           if (verifyRes.success) {
             return Swal.fire({
               icon: "success",
@@ -88,7 +88,7 @@ export const SubscriptionCard = () => {
         </ul>
         <hr className="mb-6 border-t" />
         <button
-          onClick={displayRazorpay}
+          onClick={() => displayRazorpay("essential")}
           className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors duration-300"
         >
           Choose Plan &#8377;9
@@ -115,7 +115,10 @@ export const SubscriptionCard = () => {
           <li>One-time pay, forever upgrade</li>
         </ul>
         <hr className="mb-6 border-t" />
-        <button className="block w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition-colors duration-300">
+        <button
+          onClick={() => displayRazorpay("premium")}
+          className="block w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition-colors duration-300"
+        >
           Choose Plan &#8377;49
         </button>
         <p className="text-center text-xs text-gray-400 mt-4">
