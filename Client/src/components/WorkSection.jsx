@@ -3,6 +3,7 @@ import { IoDocumentTextOutline } from "react-icons/io5";
 import { RiWechatPayFill } from "react-icons/ri";
 import { GrDocumentVerified } from "react-icons/gr";
 import banner from "../assets/banner.webp";
+import { SubscriptionCard } from "./SubscriptionCard";
 
 const iconMap = {
   IoDocumentTextOutline: IoDocumentTextOutline,
@@ -14,7 +15,7 @@ export const WorkSection = () => {
   return (
     <section>
       <img src={banner} alt="banner" className="w-full my-12" />
-
+      <SubscriptionCard />
       <h2 className="text-gray-400 font-bold text-xl md:text-2xl text-center">
         How it works
       </h2>

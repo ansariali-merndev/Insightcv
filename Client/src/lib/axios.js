@@ -52,3 +52,21 @@ export const handleGoogle = async (data) => {
     handleError();
   }
 };
+
+export const handleRazorpayOrder = async (data) => {
+  try {
+    const res = await instance.post("/razorpay-order", data);
+    return res.data;
+  } catch (error) {
+    handleError();
+  }
+};
+
+export const handleRazorpayVerify = async (data) => {
+  try {
+    const res = await instance.post("/verifyOrder", data);
+    return res.data;
+  } catch (error) {
+    handleError();
+  }
+};
