@@ -4,6 +4,7 @@ import { connectdb } from "./config/db.js";
 import { authRouter } from "./router/auth.router.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { rootRouter } from "./router/root.router.js";
 
 configDotenv();
 const app = express();
@@ -17,6 +18,7 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
+app.use("/", rootRouter);
 app.use("/auth", authRouter);
 
 connectdb().then(() => {
