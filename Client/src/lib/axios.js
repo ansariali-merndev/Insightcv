@@ -70,3 +70,12 @@ export const handleRazorpayVerify = async (data) => {
     handleError();
   }
 };
+
+export const handleFileUploader = async (data) => {
+  try {
+    const res = await instance.post("/uploader", data);
+    return res.data;
+  } catch (error) {
+    handleError();
+  }
+};
