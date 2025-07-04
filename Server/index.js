@@ -12,7 +12,7 @@ const port = process.env.PORT;
 
 app.use(
   cors({
-    origin: "https://insightcv-ali.vercel.app",
+    origin: process.env.ORIGIN,
     credentials: true,
   })
 );
