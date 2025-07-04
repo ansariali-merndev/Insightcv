@@ -81,7 +81,7 @@ export const SignUp = () => {
       return;
     }
     setCheck((prev) => !prev);
-    navigate("/");
+
     setIsAuthorized(true);
 
     setRegisterForm({
@@ -89,6 +89,7 @@ export const SignUp = () => {
       password: "",
       confirmPassword: "",
     });
+    navigate("/");
   };
 
   return (

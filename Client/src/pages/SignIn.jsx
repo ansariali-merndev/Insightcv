@@ -59,13 +59,15 @@ export const SignIn = () => {
     }
 
     setCheck((prev) => !prev);
-    navigate("/");
+
     setIsAuthorized(true);
 
     setLoginForm({
       username: "",
       password: "",
     });
+
+    navigate("/");
   };
 
   return (
