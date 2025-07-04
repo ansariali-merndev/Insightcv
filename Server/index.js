@@ -10,7 +10,12 @@ configDotenv();
 const app = express();
 const port = process.env.PORT;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://insightcv-ali.vercel.app",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 app.use("/", rootRouter);
