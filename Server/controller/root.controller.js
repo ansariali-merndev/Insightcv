@@ -1,6 +1,8 @@
+import PdfParse from "pdf-parse/lib/pdf-parse.js";
 import { razorpayInstance } from "../config/razorpay.js";
 import { handleError } from "../utils/constant.js";
 import { createHmac } from "crypto";
+import { cohere } from "../config/cohere.js";
 
 export const razorpayOrder = (req, res) => {
   const { subscription_id } = req.body;
@@ -55,5 +57,30 @@ export const razorpayVerify = (req, res) => {
     });
   } catch (error) {
     handleError(error, "Payment verify error");
+  }
+};
+
+export const fileUploader = async (req, res) => {
+  const { jobdesc } = req.body;
+  console.log("jobdesc: ", jobdesc);
+  try {
+    const fileBuffer = req.file.buffer;
+    const data = await PdfParse(fileBuffer);
+
+    const cleanData = data.text.replace(/\s+/g, " ").trim();
+
+    const chat = await cohere.chat({
+      model: "command",
+      message: `You are a professional resume analyzer. The following is plain text extracted from a PDF resume. It may not be perfectly formatted, so please ignore formatting issues and still analyze it carefully. Analyze this resume text and give specific, actionable suggestions on how the candidate can improve their resume to better match the job description. Focus on highlighting strengths and recommending additions or improvements that can help them secure the role. Keep the suggestions relevant to the job description. Limit your suggestion to around 120 words.  ResumeData: ${cleanData} Jobdesc: ${jobdesc}`,
+    });
+
+    console.log(chat.text);
+
+    return res.json({
+      success: true,
+      message: chat.text,
+    });
+  } catch (error) {
+    handleError(error, "file upload error");
   }
 };
