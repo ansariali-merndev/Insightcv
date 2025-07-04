@@ -3,14 +3,29 @@ import { IoCloudUploadOutline } from "react-icons/io5";
 import Swal from "sweetalert2";
 import { Modal } from "./DescModal";
 import { handleFileUploader } from "../lib/axios";
+import { UseUser } from "../context/userContext";
+import { useNavigate } from "react-router-dom";
 
 export const Uploader = () => {
   const [file, setFile] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [jobdesc, setJobdesc] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { isAuthorized } = UseUser();
+  const navigate = useNavigate();
 
   const handleBtnfile = () => {
+    if (!isAuthorized) {
+      return Swal.fire({
+        title: "Authentication Required",
+        text: "Please login to continue",
+        showConfirmButton: true,
+        confirmButtonText: "Login",
+      }).then(() => {
+        navigate("/sign-in");
+      });
+    }
+
     // console.log(file);
     if (!file) {
       Swal.fire({
@@ -40,7 +55,10 @@ export const Uploader = () => {
 
     if (!res.success) {
       Swal.fire({
-        text: "Something went wrong",
+        title:
+          res.message === "payment required"
+            ? "Please buy a subscription to continue "
+            : "Something went wrong",
       });
     } else {
       Swal.fire({
