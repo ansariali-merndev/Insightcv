@@ -135,7 +135,7 @@ export const SignUp = () => {
           <div className="flex-grow border-t border-gray-300"></div>
         </div>
 
-        <Google />
+        {/* <Google /> */}
       </div>
       <p>
         Already have a account?{" "}

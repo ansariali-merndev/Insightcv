@@ -112,7 +112,7 @@ export const SignIn = () => {
           <div className="flex-grow border-t border-gray-300"></div>
         </div>
 
-        <Google />
+        {/* <Google /> */}
       </div>
 
       <p>
